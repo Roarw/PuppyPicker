@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">PupperPicker</string>
+    <string name="title_picker">Picker</string>
+    <string name="title_puppers">Puppers</string>
+</resources>
