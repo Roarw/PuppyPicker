@@ -4,12 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
 import com.example.pupperpicker.databinding.FragmentPickerBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PickerFragment : Fragment() {
+
+    private val pickerViewModel: PickerViewModel by activityViewModels()
 
     private var _binding: FragmentPickerBinding? = null
 
@@ -22,17 +25,19 @@ class PickerFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val pickerViewModel =
-            ViewModelProvider(this).get(PickerViewModel::class.java)
-
         _binding = FragmentPickerBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textPicker
-        pickerViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        pickerViewModel.dogResponse.observe(viewLifecycleOwner) { dogResponse ->
+            binding.textPicker.text = dogResponse.message
+        }
+        pickerViewModel.getDog() // Force dog response to change
     }
 
     override fun onDestroyView() {
