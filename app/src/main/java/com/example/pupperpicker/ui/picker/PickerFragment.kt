@@ -22,6 +22,7 @@ class PickerFragment : Fragment() {
 
     private val pickerViewModel: PickerViewModel by activityViewModels()
     private var dogSoundIDs: List<Int>? = null
+    private var previousDogSoundID: Int = -1
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,20 +37,27 @@ class PickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        pickerViewModel.dogResponse.observe(viewLifecycleOwner) { dogResponse ->
-            if (dogResponse != null)
+        pickerViewModel.dogImage.observe(viewLifecycleOwner) { dogImage ->
+            if (dogImage != null)
             {
-                binding.removeThisText.text = dogResponse.message
+                binding.pupperCard.setImage(dogImage)
+                playDogSound()
             }
         }
 
-        pickerViewModel.getDog() // Force dog response to change
+        pickerViewModel.loading.observe(viewLifecycleOwner) { loading ->
+            if (loading) {
+                binding.pupperCard.setImage(R.drawable.ic_loading_64)
+            }
+            binding.pupperButton.isEnabled = !loading
+        }
+
+        pickerViewModel.loadNextDog() // Force dog response to change
 
         setupSounds()
 
         binding.pupperButton.setOnClickListener {
-            playDogSound()
-            pickerViewModel.getDog()
+            pickerViewModel.loadNextDog()
         }
     }
 
@@ -66,7 +74,18 @@ class PickerFragment : Fragment() {
 
     private fun playDogSound(){
         if (dogSoundIDs != null) {
-            val randomIndex = Random.nextInt(dogSoundIDs!!.size)
+            var randomIndex = Random.nextInt(dogSoundIDs!!.size)
+
+            // Avoid playing same sound twice in a row
+            if (randomIndex == previousDogSoundID)
+            {
+                randomIndex += 1
+                if (randomIndex > dogSoundIDs!!.size)
+                {
+                    randomIndex = 0
+                }
+            }
+
             MediaPlayer.create(context, dogSoundIDs!![randomIndex]).start()
         }
     }

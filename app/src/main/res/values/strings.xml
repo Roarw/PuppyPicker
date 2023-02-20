@@ -2,8 +2,10 @@
     <string name="app_name">PupperPicker</string>
 
     <string name="title_picker">Picker</string>
-    <string name="decription_picker">Image of a dog</string>
     <string name="button_picker">Find new pupper</string>
 
     <string name="title_puppers">Puppers</string>
+
+    <string name="decription_pupper_image">Image of a pupper</string>
+    <string name="decription_pupper_button">Add or remove from good puppers list</string>
 </resources>

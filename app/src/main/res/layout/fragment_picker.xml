@@ -6,25 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".ui.picker.PickerFragment">
 
-    <androidx.cardview.widget.CardView
+    <view
         android:id="@+id/pupperCard"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        class="com.example.pupperpicker.ui.DogCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/pupperImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:contentDescription="@string/decription_picker"
-            tools:src="@tools:sample/avatars" />
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/pupperButton"
@@ -37,15 +29,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pupperCard" />
-
-    <TextView
-        android:id="@+id/removeThisText"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pupperButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>
