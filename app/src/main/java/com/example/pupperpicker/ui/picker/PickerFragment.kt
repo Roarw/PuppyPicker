@@ -15,14 +15,13 @@ import kotlin.random.Random
 @AndroidEntryPoint
 class PickerFragment : Fragment() {
 
-    private val pickerViewModel: PickerViewModel by activityViewModels()
-    private var dogSoundIDs: List<Int>? = null
-
     private var _binding: FragmentPickerBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    private val pickerViewModel: PickerViewModel by activityViewModels()
+    private var dogSoundIDs: List<Int>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,7 +30,6 @@ class PickerFragment : Fragment() {
     ): View {
         _binding = FragmentPickerBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
         return root
     }
 
@@ -39,14 +37,19 @@ class PickerFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         pickerViewModel.dogResponse.observe(viewLifecycleOwner) { dogResponse ->
-            binding.removeThisText.text = dogResponse.message
+            if (dogResponse != null)
+            {
+                binding.removeThisText.text = dogResponse.message
+            }
         }
+
         pickerViewModel.getDog() // Force dog response to change
 
         setupSounds()
 
         binding.pupperButton.setOnClickListener {
             playDogSound()
+            pickerViewModel.getDog()
         }
     }
 

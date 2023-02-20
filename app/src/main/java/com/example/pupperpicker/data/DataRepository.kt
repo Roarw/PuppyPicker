@@ -1,5 +1,5 @@
 package com.example.pupperpicker.data
 
 interface DataRepository {
-    fun getRandomDog(): Response
+    suspend fun getRandomDog(): Response?
 }

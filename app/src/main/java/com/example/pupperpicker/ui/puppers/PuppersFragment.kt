@@ -12,7 +12,6 @@ import com.example.pupperpicker.databinding.FragmentPuppersBinding
 class PuppersFragment : Fragment() {
 
     private var _binding: FragmentPuppersBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
