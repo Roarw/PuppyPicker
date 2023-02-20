@@ -14,10 +14,10 @@ import javax.inject.Inject
 class PickerViewModel @Inject constructor (
     private val dataRepositoryImpl: DataRepositoryImpl
 ) : ViewModel() {
-
     private var dogResponse: Response? = null
 
     var dogImage: MutableLiveData<Bitmap?> = MutableLiveData()
+    var dogURL: MutableLiveData<String> = MutableLiveData()
     var loading: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loadNextDog() {
@@ -32,6 +32,7 @@ class PickerViewModel @Inject constructor (
                     // Load dog image
                     val bitmap: Bitmap? = dataRepositoryImpl.getDogImage(dogResponse!!)
                     dogImage.postValue(bitmap)
+                    dogURL.postValue(dogResponse!!.message)
                 }
 
                 loading.postValue(false)

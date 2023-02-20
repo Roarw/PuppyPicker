@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.viewModelScope
 import com.example.pupperpicker.R
 import com.example.pupperpicker.databinding.FragmentPickerBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,11 +38,21 @@ class PickerFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupSounds()
+        binding.pupperCard.setupButton(pickerViewModel.viewModelScope)
+
         pickerViewModel.dogImage.observe(viewLifecycleOwner) { dogImage ->
             if (dogImage != null)
             {
                 binding.pupperCard.setImage(dogImage)
                 playDogSound()
+            }
+        }
+
+        pickerViewModel.dogURL.observe(viewLifecycleOwner) { dogURL ->
+            if (dogURL.isNotEmpty())
+            {
+                binding.pupperCard.setURL(dogURL)
             }
         }
 
@@ -53,8 +64,6 @@ class PickerFragment : Fragment() {
         }
 
         pickerViewModel.loadNextDog() // Force dog response to change
-
-        setupSounds()
 
         binding.pupperButton.setOnClickListener {
             pickerViewModel.loadNextDog()

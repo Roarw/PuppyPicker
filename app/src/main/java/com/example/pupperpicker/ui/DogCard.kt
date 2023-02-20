@@ -7,7 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import androidx.cardview.widget.CardView
+import com.example.pupperpicker.PuppyPickerApplication
 import com.example.pupperpicker.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DogCard @JvmOverloads constructor(
     context: Context,
@@ -16,13 +21,34 @@ class DogCard @JvmOverloads constructor(
 ) : CardView(context, attrs, defStyleAttr) {
 
     private var _view: View? = null
+    private var _url: String = ""
 
     init {
-        setupView()
+        _view = LayoutInflater.from(context).inflate(R.layout.card_pupper, this, true)
     }
 
-    private fun setupView() {
-        _view = LayoutInflater.from(context).inflate(R.layout.card_pupper, this, true)
+    fun setupButton(viewModelScope: CoroutineScope) {
+        if (_view != null) {
+            _view!!.findViewById<ImageView>(R.id.favoriteButton).setOnClickListener {
+                val dbHelper = (context.applicationContext as PuppyPickerApplication).dbHelper
+                if (_url.isNotEmpty() && dbHelper != null) {
+                    viewModelScope.launch {
+                        withContext(Dispatchers.IO) {
+                            if (dbHelper.doesURLExist(_url)) {
+                                dbHelper.deleteURL(_url)
+                            }
+                            else {
+                                dbHelper.createURL(_url)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    fun setURL(url: String) {
+        _url = url
     }
 
     fun setImage(bitmap: Bitmap) {
