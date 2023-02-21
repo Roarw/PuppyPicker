@@ -52,6 +52,7 @@ class PickerFragment : Fragment() {
             if (dogURL.isNotEmpty())
             {
                 binding.pupperCard.setURL(dogURL)
+                binding.pupperCard.refreshButton(pickerViewModel.viewModelScope)
             }
         }
 
@@ -61,6 +62,11 @@ class PickerFragment : Fragment() {
             }
             binding.pupperButton.isEnabled = !loading
         }
+
+        binding.pupperCard._deleted.observe(viewLifecycleOwner) { deleted ->
+            binding.pupperCard.toggleButton(deleted)
+        }
+
 
         pickerViewModel.loadNextDog() // Force dog response to change
 

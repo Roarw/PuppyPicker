@@ -19,6 +19,7 @@
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:contentDescription="@string/decription_pupper_image"
+            android:padding="16dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <ImageButton
@@ -26,6 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:contentDescription="@string/decription_pupper_button"
+            android:backgroundTint="#00000000"
             app:srcCompat="@android:drawable/btn_star_big_on" />
 
     </LinearLayout>

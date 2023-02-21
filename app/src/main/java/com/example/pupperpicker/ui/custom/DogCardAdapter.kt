@@ -2,10 +2,11 @@ package com.example.pupperpicker.ui.custom
 
 import android.graphics.Bitmap
 import android.view.ViewGroup
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.CoroutineScope
 
-class DogCardAdapter(private val viewModelScope: CoroutineScope?, private val dogs: List<Pair<Bitmap?, String>>) : RecyclerView.Adapter<DogCardAdapter.DogCardViewHolder>() {
+class DogCardAdapter(private val viewLifecycleOwner: LifecycleOwner, private val viewModelScope: CoroutineScope?, private val dogs: List<Pair<Bitmap?, String>>) : RecyclerView.Adapter<DogCardAdapter.DogCardViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DogCardViewHolder {
         return DogCardViewHolder(DogCard(parent.context))
@@ -19,6 +20,10 @@ class DogCardAdapter(private val viewModelScope: CoroutineScope?, private val do
         holder._dogCard.setURL(dogs[position].second)
         if (viewModelScope != null) {
             holder._dogCard.setupButton(viewModelScope)
+        }
+
+        holder._dogCard._deleted.observe(viewLifecycleOwner) { deleted ->
+            holder._dogCard.toggleButton(deleted)
         }
     }
 

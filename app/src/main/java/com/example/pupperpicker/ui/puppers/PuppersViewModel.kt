@@ -17,7 +17,7 @@ class PuppersViewModel @Inject constructor (
     private val dataRepositoryImpl: DataRepositoryImpl
 ) : ViewModel() {
 
-    var favoriteDogs: MutableLiveData<List<Pair<Bitmap?, String>>?> = MutableLiveData()
+    var favoriteDogs: MutableLiveData<List<Pair<Bitmap?, String>>?> = MutableLiveData() // TODO: Handle state between views
     var loading: MutableLiveData<Boolean> = MutableLiveData()
 
     fun loadFavoriteDogs(dbHelper: DBHelper?) {

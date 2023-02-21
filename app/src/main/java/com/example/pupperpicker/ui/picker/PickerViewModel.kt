@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PickerViewModel @Inject constructor (
     private val dataRepositoryImpl: DataRepositoryImpl
 ) : ViewModel() {
-    private var dogResponse: Response? = null
+    private var dogResponse: Response? = null // TODO: Handle state between views
 
     var dogImage: MutableLiveData<Bitmap?> = MutableLiveData()
     var dogURL: MutableLiveData<String> = MutableLiveData()

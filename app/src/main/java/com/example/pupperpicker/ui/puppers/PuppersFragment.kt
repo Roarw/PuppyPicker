@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pupperpicker.PuppyPickerApplication
+import com.example.pupperpicker.R
 import com.example.pupperpicker.databinding.FragmentPuppersBinding
 import com.example.pupperpicker.ui.custom.DogCardAdapter
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class PuppersFragment : Fragment() {
@@ -23,8 +27,6 @@ class PuppersFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val puppersViewModel: PuppersViewModel by activityViewModels()
-
-    private var adapter = DogCardAdapter(null, listOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,12 +41,25 @@ class PuppersFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.favoritePuppers.layoutManager = LinearLayoutManager(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.favoritePuppers.layoutManager = layoutManager
+
+        // Spacing between dogs
+        val dividerItemDecoration = DividerItemDecoration(
+            binding.favoritePuppers.context,
+            layoutManager.orientation
+        )
+        val spacing = ContextCompat.getDrawable(binding.favoritePuppers.context, R.drawable.ic_spacing)
+        if (spacing != null) {
+            dividerItemDecoration.setDrawable(spacing)
+        }
+        binding.favoritePuppers.addItemDecoration(dividerItemDecoration)
 
         puppersViewModel.favoriteDogs.observe(viewLifecycleOwner) { favoriteDogs ->
             if (favoriteDogs != null)
             {
-                binding.favoritePuppers.adapter = DogCardAdapter(puppersViewModel.viewModelScope, favoriteDogs)
+                val adapter = DogCardAdapter(viewLifecycleOwner, puppersViewModel.viewModelScope, favoriteDogs)
+                binding.favoritePuppers.adapter = adapter
                 adapter.notifyDataSetChanged()
             }
         }
