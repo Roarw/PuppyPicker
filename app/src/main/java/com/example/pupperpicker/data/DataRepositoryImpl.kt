@@ -30,4 +30,14 @@ class DataRepositoryImpl @Inject constructor() : DataRepository {
             return null
         }
     }
+
+    override suspend fun getDogImage(url: String): Bitmap? {
+        try {
+            val url = URL(url)
+            return BitmapFactory.decodeStream(url.openConnection().getInputStream())
+        } catch (e: Exception) {
+            Log.w("DataFetch", e.toString())
+            return null
+        }
+    }
 }

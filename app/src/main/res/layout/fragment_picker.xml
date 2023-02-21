@@ -8,7 +8,7 @@
 
     <view
         android:id="@+id/pupperCard"
-        class="com.example.pupperpicker.ui.DogCard"
+        class="com.example.pupperpicker.ui.custom.DogCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

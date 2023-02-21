@@ -27,7 +27,7 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         onCreate(db)
     }
 
-    fun createURL(url : String) {
+    fun createURL(url : String) : Boolean {
         try {
             // Create URL
             val values = ContentValues()
@@ -37,10 +37,12 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
 
             db.insert(TABLE_NAME, null, values)
             db.close()
+            return true
 
         } catch (e: Exception) {
             // Exception
             Log.w("DataBase", e.toString())
+            return false
         }
     }
 
@@ -63,17 +65,19 @@ class DBHelper(context: Context, factory: SQLiteDatabase.CursorFactory?) :
         }
     }
 
-    fun deleteURL(url : String) {
+    fun deleteURL(url : String) : Boolean {
         try {
             // Delete URL
             val db = this.writableDatabase
 
             db.delete(TABLE_NAME, "$URL_COL = ?", arrayOf(url))
             db.close()
+            return true
 
         } catch (e: Exception) {
             // Exception
             Log.w("DataBase", e.toString())
+            return false
         }
     }
 

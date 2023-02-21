@@ -1,4 +1,4 @@
-package com.example.pupperpicker.ui
+package com.example.pupperpicker.ui.custom
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.cardview.widget.CardView
 import com.example.pupperpicker.PuppyPickerApplication
 import com.example.pupperpicker.R
@@ -22,9 +23,18 @@ class DogCard @JvmOverloads constructor(
 
     private var _view: View? = null
     private var _url: String = ""
+    var _deleted = false
 
     init {
         _view = LayoutInflater.from(context).inflate(R.layout.card_pupper, this, true)
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        if (_view != null) {
+            _view!!.layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT
+            _view!!.layoutParams.height = LinearLayout.LayoutParams.WRAP_CONTENT
+        }
     }
 
     fun setupButton(viewModelScope: CoroutineScope) {
@@ -35,10 +45,10 @@ class DogCard @JvmOverloads constructor(
                     viewModelScope.launch {
                         withContext(Dispatchers.IO) {
                             if (dbHelper.doesURLExist(_url)) {
-                                dbHelper.deleteURL(_url)
+                                _deleted = dbHelper.deleteURL(_url)
                             }
                             else {
-                                dbHelper.createURL(_url)
+                                _deleted = !dbHelper.createURL(_url)
                             }
                         }
                     }
