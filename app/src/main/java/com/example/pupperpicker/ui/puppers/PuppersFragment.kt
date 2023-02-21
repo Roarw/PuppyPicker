@@ -1,12 +1,13 @@
 package com.example.pupperpicker.ui.puppers
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import com.example.pupperpicker.PuppyPickerApplication
 import com.example.pupperpicker.databinding.FragmentPuppersBinding
 
 class PuppersFragment : Fragment() {
@@ -16,22 +17,29 @@ class PuppersFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val puppersViewModel: PuppersViewModel by activityViewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val puppersViewModel =
-            ViewModelProvider(this).get(PuppersViewModel::class.java)
-
         _binding = FragmentPuppersBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textPuppers
-        puppersViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        puppersViewModel.dogURLs.observe(viewLifecycleOwner) { dogURLs ->
+            if (dogURLs != null)
+            {
+                Log.d("DataFun", dogURLs.toString())
+            }
+        }
+
+        puppersViewModel.loadFavoriteDogs((requireActivity().applicationContext as PuppyPickerApplication).dbHelper)
     }
 
     override fun onDestroyView() {
